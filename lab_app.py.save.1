@@ -1,0 +1,70 @@
+import RPi.GPIO as GPIO
+import time
+import sqlite3
+import sys
+from flask import Flask, render_template, request
+app = Flask(__name__)
+
+
+
+@app.route("/button",methods=['GET'])
+def button ():
+	pin=3
+	range=request.args.get('range_b','');
+	range_b_int = "nan" 
+	try:
+		range_b_int= int(range)
+	except:
+		print "range not a number"
+
+	if range_b_int == 1:
+		reponse1 = "ON"
+		GPIO.output(pin, GPIO.HIGH)
+        	etat_pom =1
+	else :
+		reponse1 = "OFF"
+		GPIO.output(pin, GPIO.LOW)
+        	etat_pom =0
+
+	import sqlite3
+	conn=sqlite3.connect('/var/www/lab_app2/lab_app.db')
+	curs=conn.cursor()
+	curs.execute("SELECT * FROM pompe1")
+	etat_pom= curs.fetchall()
+	conn.close()
+
+	return render_template('pin.html',reponse = reponse1, etat=etat_pom)
+
+
+def init():
+	pin=3
+	GPIO.setmode(GPIO.BOARD)
+	GPIO.setup(pin, GPIO.OUT)
+	GPIO.setwarnings(False)
+	# configuration de la broche 5 en entree
+	GPIO.setmode(GPIO.BOARD)
+	GPIO.setup(5, GPIO.IN , pull_up_down=GPIO.PUD_DOWN)
+	# definition de l'interruption
+	GPIO.add_event_detect(5, GPIO.BOTH, callback=my_callback, bouncetime=1000)
+
+
+	#return render_template('pin.html', etat=etat_pom)
+
+
+def my_callback(channel):
+	print("Interruption detectee sur la broche 5")
+	if GPIO.output(3, GPIO.HIGH)== True:
+		etat_pom =1
+	else:
+		etat_pom =0
+	conn=sqlite3.connect('/var/www/lab_app2/lab_app.db')
+	curs=conn.cursor()
+	curs.execute("""INSERT INTO pompe1 values(datetime('now'),(?))""", (etat_pom))
+	conn.commit()
+	conn.close()
+
+
+if __name__ == "__main__":
+	# 1- initiation de la l'interruption
+	init()
+	app.run(host='0.0.0.0', port=8080, debug=True)
