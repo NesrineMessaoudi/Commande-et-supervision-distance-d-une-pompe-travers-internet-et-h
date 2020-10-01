@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Basic Page Needs
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <title>Lab Conditions by RPi</title>
+    <meta name="description" content="Lab conditions - RPi">
+    <meta name="author" content="Peter Dalmaris">
+    <!-- Mobile Specific Metas
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- FONT
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <!-- CSS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="/static/css/normalize.css">
+    <link rel="stylesheet" href="/static/css/skeleton.css">
+    <!-- Favicon
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="/static/images/favicon.png">
+  </head>
+  <body>
+
+<div class="container">
+
+     <div class = "row"> 
+	<form id="datetime_range" action="/button" method="GET">
+	   <form action="/action_page.php" >
+		<div class="three columns">
+		   <label for="from">From date</label>
+  		   <input type="date" name="from" value="{{from_date}} ">
+		</div>
+		<div class="three columns">
+		   <label for="to">To date</label>
+		   <input type="date" name="to" value="{{to_date}} ">
+  		</div>
+		<div class="three columns">
+		   <input type="submit" style="position:relative; top: 28px" id="submit_button">
+		</div>
+	   </form>
+	</form>
+      </div>	
+	
+      <div class = "row">
+	<form id="datetime_range" action="/to_plotly" method="GET">
+	   <form action="/action_page.php" >
+		<div class="three columns">
+<!--		   <label for="from">From date</label> -->
+   		   <input type="date" name="from" value="{{from_date}} ">
+		</div>
+		<div class="three columns">
+	<!--	   <label for="to">To date</label>-->
+		   <input type="date" name="to" value="{{to_date}} ">
+  		</div>
+		<div class="three columns">
+		   <label>plotly</label>
+		   <input type="submit" style="position:relative; top: 28px" id="submit_button2">
+		</div>
+	   </form>
+	</form>	
+     </div>
+
+    <!-- Datetimepicker form end -->
+      <div class="row">
+      <div class="eleven columns">
+        <form id="range_select" action = "/button" method="GET">        
+          <div class="one column">
+            <input type="radio" name="range_b" value="1" id="on" /><label>on</label>
+          </div>
+          <div class="one column">
+            <input type="radio" name="range_b" value="0" id="off" /><label>off</label>
+          </div>
+	</form>
+<!--	  <div class="eleven columns">
+                <a href="to_plotly" id="plotly" style="position:relative;top:15px">Plotly</a>
+          </div>-->
+          
+      </div>
+    </div>
+      <div class="row">
+        <div class="one-third column" style="margin-top: 5%">
+          <strong> {{title}} </strong>
+          <h1> {{ reponse}} </h1>
+        </div>
+      </div>
+    </body> 
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script>
+
+      jQuery("#range_select input[type=radio]").click(function(){
+      jQuery("#range_select").submit();
+    });
+
+    </script>
+
+
+<!-- <div class="row">  -->
+    <!-- <a href="" id="plotly_url" target="_blank"></a><span id="plotly_wait"></span> -->
+<!-- </div> -->
+
+ <div class="row">
+  <div class="one-third colum" style="margin-top: 5%">
+     <strong>Showing all records</strong>
+        <h2> status of pump </h2>
+           <table class="u-full-width">
+              <thread>
+                  <tr>
+                      <th>Date</th>
+                      <th>etat_pom</th>
+                  </tr>
+              </thread>
+              <tbody>
+               {% for row in etat %}
+                  <tr>
+                      <td>{{row[0]}}</td>
+                      <td>{{'%0.0f'|format(row[1])}}</td>
+                  <tr>
+                  {% endfor %}
+              </tbody>
+            </table>
+
+
+
+<!-- Datetimepicker files start --> 
+<link rel="stylesheet" type="text/css" href="/static/css/jquery.datetimepicker.css"/ > 
+<script src="/static/javascript/jquery.datetimepicker.js"></script>
+
+  
+
+
+</html>
