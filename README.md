@@ -1,1 +1,2 @@
-# Commande-et-supervision-distance-d-une-pompe-travers-internet-et-h
+# Commande-et-supervision-distance-d-une-pompe-travers-internet-et-historique-de-fonctionnement 
+In this project we will be using a Raspberry Pi as our local web server, where we will control, through a web page, one of its GPIOs programmed as an output. We just saw how to create a database and populate a table with information about pump interrupts from a script with SQLite3. We present to you how we can, from this data, draw a searchable curve using a browser using Python and the Flask library.
